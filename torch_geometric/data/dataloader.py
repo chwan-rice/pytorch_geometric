@@ -2,7 +2,7 @@ import torch.utils.data
 from torch.utils.data.dataloader import default_collate
 
 from torch_geometric.data import Data, Batch
-from torch._six import container_abcs, string_classes, int_classes
+from torch._six import string_classes, int_classes
 
 
 class Collater(object):
@@ -23,12 +23,8 @@ class Collater(object):
             return torch.tensor(batch)
         elif isinstance(elem, string_classes):
             return batch
-        elif isinstance(elem, container_abcs.Mapping):
-            return {key: self.collate([d[key] for d in batch]) for key in elem}
         elif isinstance(elem, tuple) and hasattr(elem, '_fields'):
             return type(elem)(*(self.collate(s) for s in zip(*batch)))
-        elif isinstance(elem, container_abcs.Sequence):
-            return [self.collate(s) for s in zip(*batch)]
 
         raise TypeError('DataLoader found invalid type: {}'.format(type(elem)))
 
