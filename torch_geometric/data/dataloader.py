@@ -2,7 +2,7 @@ import torch.utils.data
 from torch.utils.data.dataloader import default_collate
 
 from torch_geometric.data import Data, Batch
-from torch._six import string_classes, int_classes
+from torch._six import string_classes
 
 
 class Collater(object):
@@ -19,8 +19,6 @@ class Collater(object):
             return default_collate(batch)
         elif isinstance(elem, float):
             return torch.tensor(batch, dtype=torch.float)
-        elif isinstance(elem, int_classes):
-            return torch.tensor(batch)
         elif isinstance(elem, string_classes):
             return batch
         elif isinstance(elem, tuple) and hasattr(elem, '_fields'):
